@@ -1,6 +1,15 @@
 'use server'
 
-export const loginAction = async (formData: FormData) => {
+interface LoginState {
+    success: boolean
+    message: string
+    data?: {
+        accessToken: string
+        refreshToken: string
+    }
+}
+
+export const loginAction = async (prevState: LoginState, formData: FormData) => {
     const email = formData.get('email')
     const password = formData.get('password')
 
@@ -19,5 +28,7 @@ export const loginAction = async (formData: FormData) => {
 
     const data = await result.json()
     console.log(data)
+
+    return data;
 
 }

@@ -1,12 +1,27 @@
+"use client"
+
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { loginAction } from "../_actions/authAction";
+import { useActionState, useEffect } from "react";
+import { toast } from "sonner";
 
 const LoginForm = () => {
+
+  const [state, formAction, isPending] = useActionState(loginAction, false);
+
+  useEffect(() => {
+    if (!state) return;
+    if(state?.success) {
+      toast.success(state.message || 'Logged in successfully');
+    } else {
+      toast.error(state.message || 'Failed to login');
+    }
+  }, [state]);
   return (
-    <form action={loginAction} className="flex flex-col gap-4">
+    <form action={formAction} className="flex flex-col gap-4">
       <div className="flex flex-col gap-2">
         <Label htmlFor="email">Email</Label>
         <Input
@@ -38,7 +53,7 @@ const LoginForm = () => {
         />
       </div>
       <Button type="submit" className="w-full mt-2 font-medium">
-        Login
+        {isPending ? 'Logging in...' : 'Login'}
       </Button>
     </form>
   );
