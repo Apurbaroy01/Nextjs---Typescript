@@ -7,7 +7,8 @@ import { registerUserpayload } from "./user.interface";
 
 const registeruserIntoDB = async (payload: registerUserpayload) => {
     const { name, email, password, profilePhoto } = payload
-    const isExitUser = await prisma.user.findUniqueOrThrow({
+
+    const isExitUser = await prisma.user.findUnique({
         where: {
             email
         }
