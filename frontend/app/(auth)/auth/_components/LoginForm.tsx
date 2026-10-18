@@ -10,7 +10,7 @@ import { toast } from "sonner";
 
 const LoginForm = () => {
 
-  const [state, formAction, isPending] = useActionState(loginAction, false);
+  const [state, formAction, isPending] = useActionState(loginAction, null);
 
   useEffect(() => {
     if (!state) return;
@@ -20,6 +20,8 @@ const LoginForm = () => {
       toast.error(state.message || 'Failed to login');
     }
   }, [state]);
+
+  
   return (
     <form action={formAction} className="flex flex-col gap-4">
       <div className="flex flex-col gap-2">
