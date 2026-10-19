@@ -45,7 +45,6 @@ interface NavbarProps {
 }
 
 export function Navbar({ data }: NavbarProps) {
-  console.log("navbar data => ", data)
 
   const [isLoading, setIsLoading] = useState(false);
   const router = useRouter();
