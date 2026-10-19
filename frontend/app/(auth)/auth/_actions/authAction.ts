@@ -1,6 +1,7 @@
 'use server'
 
 import { cookies } from "next/headers"
+import { redirect } from "next/navigation"
 
 export interface LoginState {
     success: boolean
@@ -34,17 +35,19 @@ export const loginAction = async (prevState: LoginState | null, formData: FormDa
     if (data.success && data.data?.accessToken) {
         const cookieStore = await cookies()
 
-        cookieStore.set('accessToken', data.data.accessToken,{
+        cookieStore.set('accessToken', data.data.accessToken, {
             httpOnly: true,
             sameSite: 'lax',
             maxAge: 60 * 60 * 24
         })
 
-        cookieStore.set('refreshToken', data.data.refreshToken,{
+        cookieStore.set('refreshToken', data.data.refreshToken, {
             httpOnly: true,
             sameSite: 'lax',
             maxAge: 60 * 60 * 24 * 7
         })
+
+        redirect("/dashboard", "replace")
     }
 
     return data;

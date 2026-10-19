@@ -3,13 +3,16 @@ import { cookies } from "next/headers"
 export const getMe = async () => {
     const cookieStore = await cookies();
 
-    const accessToken = cookieStore.get('accessToken')
+    const accessToken = cookieStore.get('accessToken')?.value
 
     if (!accessToken) {
-        return { message: "Unauthorized" }
+        return {
+            success: false,
+            message: "You are not logged in"
+        }
     }
 
-    const res = await fetch(`${process.env.BACKEND_URL}/api/auth/me`, {
+    const res = await fetch(`${process.env.BACKEND_URL}/api/users/me`, {
         method: 'GET',
         headers: {
             // Authorization: `Bearer ${accessToken.value}`
