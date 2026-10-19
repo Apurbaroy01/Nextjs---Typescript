@@ -12,6 +12,10 @@ import {
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
 import { User, LayoutDashboard, Settings, LogOut } from "lucide-react";
+import { Logout } from "@/services/logout";
+import { useEffect, useState } from "react";
+import { toast } from "sonner";
+import { useRouter } from "next/navigation";
 
 const navItems = [
   { label: "Home", href: "/" },
@@ -39,8 +43,29 @@ type UserDataType = {
 interface NavbarProps {
   data: UserDataType;
 }
+
 export function Navbar({ data }: NavbarProps) {
-  console.log("navbar data => ",data)
+  console.log("navbar data => ", data)
+
+  const [isLoading, setIsLoading] = useState(false);
+  const router = useRouter();
+
+  const handleLogout = async () => {
+    try {
+      setIsLoading(true);
+      await Logout();
+
+      toast.success("You have been logged out successfully");
+      router.push("/auth/login");
+      router.refresh();
+    } catch (error) {
+      toast.error("লগআউট করতে সমস্যা হয়েছে, আবার চেষ্টা করুন");
+      console.error(error);
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
   return (
     <header className="sticky top-0 z-50 w-full border-b bg-background">
       <div className="container relative mx-auto flex h-16 items-center justify-between px-4">
@@ -100,9 +125,9 @@ export function Navbar({ data }: NavbarProps) {
                 </Link>
               </DropdownMenuItem>
               <DropdownMenuSeparator />
-              <DropdownMenuItem className="flex items-center gap-2 cursor-pointer text-destructive focus:text-destructive">
+              <DropdownMenuItem onClick={() => handleLogout()} disabled={isLoading} className="flex items-center gap-2 cursor-pointer text-destructive focus:text-destructive">
                 <LogOut className="size-4" />
-                <span>Log out</span>
+                <span>{isLoading ? "Logging out..." : "Logout"}</span>
               </DropdownMenuItem>
             </DropdownMenuContent>
           </DropdownMenu>

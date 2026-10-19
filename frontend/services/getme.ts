@@ -17,6 +17,11 @@ export const getMe = async () => {
         headers: {
             // Authorization: `Bearer ${accessToken.value}`
             Cookie: `accessToken=${accessToken}`
+        },
+        cache: "force-cache",
+        next: {
+            revalidate: 60 * 60 * 24,
+            tags: ["my-profile"]
         }
     })
 
