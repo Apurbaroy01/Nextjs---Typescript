@@ -19,7 +19,28 @@ const navItems = [
   { label: "Dashboard", href: "/dashboard" },
 ];
 
-export function Navbar() {
+type UserDataType = {
+  success: boolean
+  statusCode: number
+  message: string
+  data: {
+    profile: {
+      id: string
+      name: string
+      email: string
+      activeStatus: string
+      role: string
+      createdAt: string
+      updatedAt: string
+    }
+  }
+}
+
+interface NavbarProps {
+  data: UserDataType;
+}
+export function Navbar({ data }: NavbarProps) {
+  console.log("navbar data => ",data)
   return (
     <header className="sticky top-0 z-50 w-full border-b bg-background">
       <div className="container relative mx-auto flex h-16 items-center justify-between px-4">
@@ -57,7 +78,8 @@ export function Navbar() {
             </DropdownMenuTrigger>
 
             <DropdownMenuContent align="end" className="w-56">
-              <DropdownMenuLabel>My Account</DropdownMenuLabel>
+              <DropdownMenuLabel className="text-sm font-medium pl-3">{`${data.data.profile.name}`}</DropdownMenuLabel>
+              <DropdownMenuLabel className="text-xs text-muted-foreground pl-3">{`${data.data.profile.email}`}</DropdownMenuLabel>
               <DropdownMenuSeparator />
               <DropdownMenuItem asChild>
                 <Link href="/profile" className="flex items-center gap-2 cursor-pointer">
