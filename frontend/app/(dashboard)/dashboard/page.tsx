@@ -5,6 +5,8 @@ const UserDashboardPage = async () => {
     console.log(data)
     return (
         <div>
+            <h1>User dashboard</h1>
+            <p>{data?.message}</p> 
             user dashboard page
         </div>
     );

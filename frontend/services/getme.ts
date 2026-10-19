@@ -21,5 +21,5 @@ export const getMe = async () => {
     })
 
     const data = await res.json();
-    console.log(data);
+    return data;
 }
