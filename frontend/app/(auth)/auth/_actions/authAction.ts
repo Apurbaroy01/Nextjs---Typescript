@@ -53,9 +53,11 @@ export const loginAction = async (prevState: LoginState | null, formData: FormDa
         if ((decodedToken?.role) === "USER") {
             redirect("/dashboard", "replace")
         } else if ((decodedToken?.role) === "ADMIN") {
-            redirect("/admin", "replace")
+            redirect("/admin-dashboard", "replace")
+        } else if ((decodedToken?.role) === "AUTHOR") {
+            redirect("/author-dashboard", "replace")
         } else {
-            redirect("/", "replace")
+            redirect("/not-found", "replace")
         }
     }
 

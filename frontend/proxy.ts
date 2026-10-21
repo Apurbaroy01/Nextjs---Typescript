@@ -33,9 +33,16 @@ export function proxy(request: NextRequest) {
         return NextResponse.redirect(new URL('/auth/login', request.url))
     }
 
+    if (pathname.startsWith('/dashboard') && decoded?.role !== "USER") {
+        return NextResponse.redirect(new URL('/not-found', request.url))
+    } else if (pathname.startsWith('/author-dashboard') && decoded?.role !== "AUTHOR") {
+        return NextResponse.redirect(new URL('/not-found', request.url))
+    } else if (pathname.startsWith('/admin-dashboard') && decoded?.role !== "ADMIN") {
+        return NextResponse.redirect(new URL('/not-found', request.url))
+    }
+
     return NextResponse.next()
 }
- 
 
 export const config = {
     matcher: [
