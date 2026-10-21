@@ -36,13 +36,23 @@ const loginUser = catchAsync(async (req: Request, res: Response, next: NextFunct
 
 const refreshToken = catchAsync(async (req: Request, res: Response, next: NextFunction) => {
     const token = req.cookies.refreshToken;
-    const refreshToken = await authService.refreshToken(token)
+    const {accessToken} = await authService.refreshToken(token)
+
+    console.log("accessToken:::", accessToken)
+    const isProduction = config.node_env === 'production';
+
+    res.cookie("accessToken", accessToken, {
+        httpOnly: true,
+        secure: isProduction,
+        sameSite: isProduction ? 'none' : 'lax',
+        maxAge: 1000 * 60 * 60 * 24
+    })
 
     sendResponse(res, {
         success: true,
         statusCode: httpStatus.OK,
         message: "Token refreshed successfully",
-        data: { refreshToken }
+        data: { accessToken }
     })
 })
 

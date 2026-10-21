@@ -75,7 +75,7 @@ const refreshToken = async (token: string) => {
 
     const accessToken = jwtUtils.createToken(jwtPayload, config.jwt_access_Secret!, config.jwt_access_expires_in as SignOptions)
 
-    return accessToken
+    return {accessToken}
 
 };
 
