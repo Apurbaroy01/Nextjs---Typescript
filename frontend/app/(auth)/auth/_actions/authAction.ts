@@ -49,12 +49,12 @@ export const loginAction = async (prevState: LoginState | null, formData: FormDa
         })
 
         const decodedToken = jwt.decode(data.data.accessToken) as JwtPayload;
-        
-        if((decodedToken?.role) === "USER") {
+
+        if ((decodedToken?.role) === "USER") {
             redirect("/dashboard", "replace")
-        } else if((decodedToken?.role) === "ADMIN") {
+        } else if ((decodedToken?.role) === "ADMIN") {
             redirect("/admin", "replace")
-        }else{
+        } else {
             redirect("/", "replace")
         }
     }
