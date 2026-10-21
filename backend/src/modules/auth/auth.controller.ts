@@ -3,21 +3,24 @@ import { catchAsync } from "../../utils/catchAsync";
 import { authService } from "./auth.services";
 import { sendResponse } from "../../utils/sendResponse";
 import httpStatus from "http-status"
+import config from "../../config";
 
 const loginUser = catchAsync(async (req: Request, res: Response, next: NextFunction) => {
     const payload = req.body
     const { accessToken, refreshToken } = await authService.loginUser(payload)
 
+    const isProduction = config.node_env === 'production';
+
     res.cookie("accessToken", accessToken, {
         httpOnly: true,
-        secure: false,
-        sameSite: "none",
+        secure: isProduction,
+        sameSite: isProduction ? 'none' : 'lax',
         maxAge: 1000 * 60 * 60 * 24
     })
     res.cookie("refreshToken", refreshToken, {
         httpOnly: true,
-        secure: false,
-        sameSite: "none",
+        secure: isProduction,
+        sameSite: isProduction ? 'none' : 'lax',
         maxAge: 1000 * 60 * 60 * 24 * 7
     })
 
